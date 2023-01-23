@@ -98,13 +98,10 @@ func (svc *music_service) Add(data *input.InputMusic, file multipart.File, handl
 	}
 	
 	music.Name = data.Name
-	music.Location = data.Location
-	music.Description = data.Description
-	music.Price = data.Price
-	music.Stock = data.Stock
-	music.Category = data.Category
-	music.Image = images.URL
-	music.Rating=data.Rating
+	music.Album= data.Album
+	music.AlbumArt = images.URL
+	music.Singer = data.Singer
+	music.PublishDate=data.PublishDate
 	
 	result, err := svc.repo.Add(&music)
 	if err != nil {

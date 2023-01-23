@@ -11,7 +11,6 @@ import (
 	"backend/src/input"
 	"backend/src/interfaces"
 
-	"github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 )
@@ -66,7 +65,7 @@ func (ctrl *musics_ctrl) AddData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, handler, err := r.FormFile("avatar")
+	file, handler, err := r.FormFile("music")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -80,13 +79,13 @@ func (ctrl *musics_ctrl) AddData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = govalidator.ToInt(data.Price)
+	
 	if err != nil {
 		helpers.New(err.Error(), 400, true).Send(w)
 		return 
 	}
 
-	err = helpers.Validation(data.Name, data.Category, data.Description)
+	err = helpers.Validation(data.Name, data.Album, data.Singer)
 	if err != nil {
 		helpers.New(err.Error(), 400, true).Send(w)
 		return 
