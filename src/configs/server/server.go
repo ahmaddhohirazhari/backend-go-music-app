@@ -1,4 +1,4 @@
-package serve
+package server
 
 import (
 	"log"
@@ -7,7 +7,6 @@ import (
 
 	"backend/src/routers"
 
-	"github.com/rs/cors"
 	"github.com/spf13/cobra"
 )
 
@@ -21,32 +20,20 @@ func serve(cmd *cobra.Command, args []string) error {
 
 	// headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	// methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
-	// origins := handlers.AllowedOrigins([]string{"http://localhost:8081/"})
-	
-
-	c := cors.New(cors.Options{
-		AllowedHeaders:   []string{"X-Requested-With", "Content-Type", "Authorization"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedOrigins:   []string{"http://localhost:8081/"},
-		AllowCredentials: true,
-		// Enable Debugging for testing, consider disabling in production
-		Debug: true,
-	})
+	// origins := handlers.AllowedOrigins([]string{"http://localhost:8080/"})
 
 	// mainRoute.Use(mainRoute)
 
 	if mainRoute, err := routers.New(); err == nil {
 		var addrs string = ""
 
-		handler := c.Handler(mainRoute)
-
 		if pr := os.Getenv("APP_PORT"); pr != "" {
-			addrs = ":" + pr
+			addrs = "127.0.0.1:" + pr
 		}
 
-		log.Println("App running on 127.0.0.1" + addrs)
+		log.Println("App running on " + addrs)
 
-		if err := http.ListenAndServe(addrs, handler); err != nil {
+		if err := http.ListenAndServe(addrs, mainRoute); err != nil {
 			return err
 		}
 

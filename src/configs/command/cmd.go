@@ -1,8 +1,7 @@
 package command
 
 import (
-	"backend/src/configs/serve"
-	database "backend/src/database/gorm"
+	"backend/src/configs/server"
 
 	"github.com/spf13/cobra"
 )
@@ -12,8 +11,7 @@ var initCommand = cobra.Command{
 }
 
 func init() {
-	initCommand.AddCommand(serve.ServeCmd)
-	initCommand.AddCommand(database.MigrateCmd)
+	initCommand.AddCommand(server.ServeCmd)
 }
 
 func Run(args []string) error {

@@ -89,7 +89,7 @@ func (repo *music_repo) Update(id int, data *models.Music) (*models.Music, error
 
 	var musics models.Music
 
-	result := repo.db.Model(&models.Music{}).Where("music_id = ?", id).Updates(&models.Music{Name: data.Name, })
+	result := repo.db.Model(&models.Music{}).Where("music_id = ?", id).Updates(&models.Music{Name: data.Name,Album: data.Album })
 
 	if result.Error != nil {
 		return nil, errors.New("gagal meng-update data")

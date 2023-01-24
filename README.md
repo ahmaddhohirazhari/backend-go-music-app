@@ -77,7 +77,9 @@ Link Deploy :
 
 ## 💻 End Point
 
-Link End Point :
+Postmant Documentation :
+
+- Postman : [link](https://documenter.getpostman.com/view/19983829/2s8ZDbVfs6)
 
 ## 🚀 About Me
 
