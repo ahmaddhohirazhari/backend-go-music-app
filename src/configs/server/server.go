@@ -7,6 +7,7 @@ import (
 
 	"backend/src/routers"
 
+	"github.com/rs/cors"
 	"github.com/spf13/cobra"
 )
 
@@ -18,11 +19,7 @@ var ServeCmd = &cobra.Command{
 
 func serve(cmd *cobra.Command, args []string) error {
 
-	// headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	// methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
-	// origins := handlers.AllowedOrigins([]string{"http://localhost:8080/"})
-
-	// mainRoute.Use(mainRoute)
+	
 
 	if mainRoute, err := routers.New(); err == nil {
 		var addrs string = ""
@@ -33,9 +30,16 @@ func serve(cmd *cobra.Command, args []string) error {
 
 		log.Println("App running on " + addrs)
 
-		if err := http.ListenAndServe(addrs, mainRoute); err != nil {
+		handler := cors.New(cors.Options{
+			AllowedOrigins: []string{os.Getenv("ORIGIN_ALLOWED")},
+			AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+			AllowedHeaders: []string{"X-Requested-With"},
+		}).Handler(mainRoute)
+
+		if err := http.ListenAndServe(addrs, handler); err != nil {
 			return err
 		}
+
 
 		return nil
 
