@@ -19,8 +19,6 @@ var ServeCmd = &cobra.Command{
 
 func serve(cmd *cobra.Command, args []string) error {
 
-	
-
 	if mainRoute, err := routers.New(); err == nil {
 		var addrs string = ""
 
@@ -31,7 +29,7 @@ func serve(cmd *cobra.Command, args []string) error {
 		log.Println("App running on " + addrs)
 
 		handler := cors.New(cors.Options{
-			AllowedOrigins: []string{os.Getenv("ORIGIN_ALLOWED")},
+			AllowedOrigins: []string{"http://localhost:3001"},
 			AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 			AllowedHeaders: []string{"X-Requested-With"},
 		}).Handler(mainRoute)
@@ -39,7 +37,6 @@ func serve(cmd *cobra.Command, args []string) error {
 		if err := http.ListenAndServe(addrs, handler); err != nil {
 			return err
 		}
-
 
 		return nil
 

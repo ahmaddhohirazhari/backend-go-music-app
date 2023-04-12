@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	fmt.Print("Hello World")
-	
+
+	fmt.Println("aplikasi berjalan pada port 8081")
+
 	if err := command.Run(os.Args[1:]); err != nil {
 		log.Fatal(err)
 	}
