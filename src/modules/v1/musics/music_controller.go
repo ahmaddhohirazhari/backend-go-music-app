@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"backend/src/database/gorm/models"
 	"backend/src/helpers"
@@ -38,10 +37,7 @@ func (ctrl *musics_ctrl) GetByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var dataID = r.URL.Query()
-	id, err := strconv.Atoi(dataID["id"][0])
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-	}
+	id := dataID.Get("id")
 
 	data, err := ctrl.svc.FindByID(id)
 	if err != nil {
@@ -79,22 +75,21 @@ func (ctrl *musics_ctrl) AddData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
 	if err != nil {
 		helpers.New(err.Error(), 400, true).Send(w)
-		return 
+		return
 	}
 
 	err = helpers.Validation(data.Name, data.Album, data.Singer)
 	if err != nil {
 		helpers.New(err.Error(), 400, true).Send(w)
-		return 
+		return
 	}
 
 	// _, err = govalidator.ValidateStruct(data)
 	// if err != nil {
 	// 	helpers.New(err.Error(), 400, true).Send(w)
-	// 	return 
+	// 	return
 	// }
 
 	result, err := ctrl.svc.Add(&data, file, handler)
@@ -110,10 +105,7 @@ func (ctrl *musics_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var data = mux.Vars(r)
-	id, err := strconv.Atoi(data["id"])
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-	}
+	id := data["id"]
 
 	result, err := ctrl.svc.Delete(id)
 	if err != nil {
@@ -131,10 +123,7 @@ func (ctrl *musics_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 
 	json.NewDecoder(r.Body).Decode(&data)
 
-	id, err := strconv.Atoi(dataId["id"][0])
-	if err != nil {
-		fmt.Fprint(w, err.Error())
-	}
+	id := dataId.Get("id")
 
 	result, err := ctrl.svc.Update(id, &data)
 	if err != nil {

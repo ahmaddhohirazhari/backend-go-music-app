@@ -3,7 +3,7 @@ package input
 import "time"
 
 type InputMusic struct {
-	Music_ID    uint      `gorm:"primaryKey" json:"Music_id"`
+	Music_ID    string    `gorm:"primaryKey" json:"id"`
 	Name        string    `json:"name" valid:"type(string)"`
 	Album       string    `json:"album" valid:"type(string)"`
 	AlbumArt    string    `json:"image"`

@@ -28,7 +28,7 @@ func (svc *music_service) FindAll() (*helpers.Response, error) {
 	return res, nil
 }
 
-func (svc *music_service) FindByID(id int) (*helpers.Response, error) {
+func (svc *music_service) FindByID(id string) (*helpers.Response, error) {
 
 	result, err := svc.repo.FindByID(id)
 	if err != nil {
@@ -39,7 +39,6 @@ func (svc *music_service) FindByID(id int) (*helpers.Response, error) {
 	res := helpers.New(result, 200, false)
 	return res, nil
 }
-
 
 // func (svc *music_service) Save(data *models.Music) (*helpers.Response, error) {
 
@@ -63,7 +62,7 @@ func (svc *music_service) FindByID(id int) (*helpers.Response, error) {
 // 	return res, nil
 // }
 
-func (svc *music_service) Delete(id int) (*helpers.Response, error) {
+func (svc *music_service) Delete(id string) (*helpers.Response, error) {
 
 	result, err := svc.repo.Delete(id)
 	if err != nil {
@@ -75,7 +74,7 @@ func (svc *music_service) Delete(id int) (*helpers.Response, error) {
 	return res, nil
 }
 
-func (svc *music_service) Update(id int, data *models.Music) (*helpers.Response, error) {
+func (svc *music_service) Update(id string, data *models.Music) (*helpers.Response, error) {
 	result, err := svc.repo.Update(id, data)
 	if err != nil {
 		res := helpers.New(result, 400, true)
@@ -88,7 +87,6 @@ func (svc *music_service) Update(id int, data *models.Music) (*helpers.Response,
 
 func (svc *music_service) Add(data *input.InputMusic, file multipart.File, handle *multipart.FileHeader) (*helpers.Response, error) {
 
-
 	var music models.Music
 
 	images, err := helpers.UploadImages("music-app", file, handle)
@@ -96,13 +94,13 @@ func (svc *music_service) Add(data *input.InputMusic, file multipart.File, handl
 		res := helpers.New("err.Error()", 400, true)
 		return res, nil
 	}
-	
+
 	music.Name = data.Name
-	music.Album= data.Album
+	music.Album = data.Album
 	music.AlbumArt = images.URL
 	music.Singer = data.Singer
-	music.PublishDate=data.PublishDate
-	
+	music.PublishDate = data.PublishDate
+
 	result, err := svc.repo.Add(&music)
 	if err != nil {
 		res := helpers.New(result, 400, true)
